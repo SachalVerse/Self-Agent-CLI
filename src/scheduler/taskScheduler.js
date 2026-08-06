@@ -9,6 +9,7 @@ const logger = require('../utils/logger');
 class TaskScheduler {
   constructor() {
     this.tasks = [];
+    this.reminderTimer = null;
   }
 
   startAll() {
@@ -50,19 +51,15 @@ class TaskScheduler {
       }
     );
 
-    this._scheduleJob(
-      'Reminder Check',
-      '* * * * *',
-      async () => {
-        logger.debug('🔔 [CRON] Checking pending reminders & notifications...');
-        try {
-          const reminderService = require('./reminderService');
-          await reminderService.checkAndTriggerReminders();
-        } catch (err) {
-          logger.error('Error running reminder check job:', err.message);
-        }
+    // High-precision reminder check (every 5 seconds) to eliminate cron latency
+    this.reminderTimer = setInterval(async () => {
+      try {
+        const reminderService = require('./reminderService');
+        await reminderService.checkAndTriggerReminders();
+      } catch (err) {
+        logger.error('Error running high-precision reminder check:', err.message);
       }
-    );
+    }, 5000);
 
     logger.info(`✅ Task Scheduler active with ${this.tasks.length} scheduled tasks.`);
   }
@@ -115,6 +112,11 @@ class TaskScheduler {
       logger.debug(`Stopped task: ${name}`);
     }
     this.tasks = [];
+    
+    if (this.reminderTimer) {
+      clearInterval(this.reminderTimer);
+      this.reminderTimer = null;
+    }
   }
 }
 
