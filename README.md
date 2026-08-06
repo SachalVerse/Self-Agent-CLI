@@ -4,13 +4,6 @@
 
 <div align="center">
 
-<pre>
-  ___ ___ _    ___   _   ___ ___ _  _ _____ 
- / __| __| |  | __| /_\ / __| __| \| |_   _|
- \__ \ _|| |__| _| / _ \ (_ | _|| .` | | |  
- |___/___|____|_| /_/ \_\___|___|_|\_| |_|  
-</pre>
-
 ### **The Autonomous AI Agent & Secure WhatsApp Gateway Engine**
 
 *Install once, start the server, and command your AI assistant from either your CLI console or directly from WhatsApp.*
