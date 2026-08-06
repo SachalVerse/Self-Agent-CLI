@@ -1,4 +1,4 @@
-<div align="center">
+# SelfAgent
 
 ```text
   ___ ___ _    ___   _   ___ ___ _  _ _____ 
@@ -7,6 +7,8 @@
  |___/___|____|_| /_/ \_\___|___|_|\_| |_|
 ```
 
+<div align="center">
+
 ### **The Autonomous AI Agent & Secure WhatsApp Gateway Engine**
 
 *Install once, start the server, and command your AI assistant from either your CLI console or directly from WhatsApp.*
@@ -14,7 +16,7 @@
 [![npm version](https://img.shields.io/npm/v/selfagent0.svg?color=gold&style=flat-square)](https://www.npmjs.com/package/selfagent0)
 ![node engine](https://img.shields.io/badge/node-%3E%3D20.0.0-green.svg?style=flat-square)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
-![downloads](https://img.shields.io/npm/dm/selfagent0.svg?color=purple&style=flat-square)
+![downloads](https://img.shields.io/badge/downloads-100%2B-purple?style=flat-square)
 
 ---
 
