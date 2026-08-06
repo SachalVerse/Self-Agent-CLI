@@ -1,0 +1,19 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules",
+    "logs/*",
+    "config/*",
+    ".baileys_auth/*",
+    ".baileys_test/*",
+    ".wwebjs_auth/*",
+    "tmp/*",
+    "scratch/*"
+  ],
+  "watch": [
+    "server.js",
+    "src/"
+  ],
+  "ext": "js"
+}

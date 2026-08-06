@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# OS secret store data (encrypted), auth & sessions
+.selfagent/
+.DS_Store
+.baileys_auth/
+.baileys_test/
+.wwebjs_auth/
+
+# Logs
+logs/*.log
+
+# Runtime state
+config/gateway_store.json
+config/user_config.json
+tmp/
+scratch/
+
+# Large downloaded browser binaries (build artifact, not source)
+chrome/*.zip
+
+# Build output
+dist/

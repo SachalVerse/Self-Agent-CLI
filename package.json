@@ -1,0 +1,74 @@
+{
+  "name": "selfagent0",
+  "version": "1.0.3",
+  "description": "SelfAgent — Cross-platform Autonomous AI & WhatsApp Gateway Agent. Install once, chat from your terminal or WhatsApp. Secure key storage via OS keychain (Windows DPAPI, macOS Keychain, Linux libsecret).",
+  "main": "server.js",
+  "bin": {
+    "selfagent": "index.js"
+  },
+  "preferGlobal": true,
+  "files": [
+    "server.js",
+    "src/",
+    ".env.example",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "setup": "node server.js setup",
+    "keys": "node server.js keys",
+    "migrate": "node server.js migrate",
+    "help": "node server.js --help"
+  },
+  "keywords": [
+    "whatsapp",
+    "agent",
+    "ai",
+    "voice",
+    "chatbot",
+    "baileys",
+    "groq",
+    "cross-platform",
+    "cli",
+    "secret-store",
+    "keychain"
+  ],
+  "author": "SelfAgent",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SachalSumra/selfagent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SachalSumra/selfagent/issues"
+  },
+  "homepage": "https://github.com/SachalSumra/selfagent#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc14",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "form-data": "^4.0.0",
+    "groq-sdk": "^0.3.0",
+    "gtts": "^0.2.1",
+    "helmet": "^7.1.0",
+    "multer": "^1.4.4",
+    "node-cache": "^5.1.2",
+    "node-cron": "^3.0.3",
+    "openai": "^7.4.0",
+    "pino": "^10.3.1",
+    "qrcode": "^1.5.3",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.23.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
