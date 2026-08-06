@@ -1,6 +1,6 @@
 {
   "name": "selfagent0",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "SelfAgent — Cross-platform Autonomous AI & WhatsApp Gateway Agent. Install once, chat from your terminal or WhatsApp. Secure key storage via OS keychain (Windows DPAPI, macOS Keychain, Linux libsecret).",
   "main": "server.js",
   "bin": {
@@ -10,6 +10,8 @@
   "files": [
     "server.js",
     "src/",
+    "index.js",
+    "banner.png",
     ".env.example",
     "README.md"
   ],

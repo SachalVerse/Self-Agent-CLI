@@ -1,5 +1,7 @@
 # SelfAgent
 
+![SelfAgent Banner](banner.png)
+
 ```text
   ___ ___ _    ___   _   ___ ___ _  _ _____ 
  / __| __| |  | __| /_\ / __| __| \| |_   _|
