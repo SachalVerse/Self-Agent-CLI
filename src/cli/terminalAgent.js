@@ -63,25 +63,40 @@ function getGreeting() {
   return 'Good evening.';
 }
 
-function printBanner() {
-  const asciiLogo = `
-${COLORS.gold}  ___ ___ _    ___   _   ___ ___ _  _ _____ 
- / __| __| |  | __| /_\\ / __| __| \\| |_   _|
- \\__ \\ _|| |__| _| / _ \\ (_ | _|| .\` | | |  
- |___/___|____|_| /_/ \\_\\___|___|_|\\_| |_|  ${COLORS.reset}
-`;
+function centerLine(text, width = 80) {
+  const plainText = text.replace(/\x1b\[[0-9;]*m/g, '');
+  const padLength = Math.max(0, Math.floor((width - plainText.length) / 2));
+  return ' '.repeat(padLength) + text;
+}
 
-  console.log(asciiLogo);
-  console.log(`${COLORS.lavenderBold} Autonomous AI Systems & WhatsApp Gateway Agent${COLORS.reset}`);
-  console.log(`${COLORS.gray} ${getGreeting()}${COLORS.reset}`);
+function printBanner() {
+  const width = process.stdout.columns || 80;
+
+  const logoLines = [
+    `  ___ ___ _    ___   _   ___ ___ _  _ _____ `,
+    ` / __| __| |  | __| /_\\ / __| __| \\| |_   _|`,
+    ` \\__ \\ _|| |__| _| / _ \\ (_ | _|| .\` | | |  `,
+    ` |___/___|____|_| /_/ \\_\\___|___|_|\\_| |_|  `
+  ];
+
+  console.log('');
+  for (const line of logoLines) {
+    console.log(centerLine(`${COLORS.gold}${line}${COLORS.reset}`, width));
+  }
+  console.log('');
+
+  console.log(centerLine(`${COLORS.lavenderBold} Autonomous AI Systems & WhatsApp Gateway Agent${COLORS.reset}`, width));
+  console.log(centerLine(`${COLORS.gray} ${getGreeting()}${COLORS.reset}`, width));
+  console.log('');
 
   if (gateway.isReady) {
-    console.log(`${COLORS.green} ✅ WhatsApp Connected (${gateway.myPhone || 'Active'})${COLORS.reset}`);
-    console.log(`${COLORS.yellowHighlight} Type 'resources', 'status', or '/help' to get started.${COLORS.reset}`);
+    console.log(centerLine(`${COLORS.green} ✅ WhatsApp Connected (${gateway.myPhone || 'Active'})${COLORS.reset}`, width));
+    console.log(centerLine(`${COLORS.yellowHighlight} Type 'resources', 'status', or '/help' to get started.${COLORS.reset}`, width));
   } else {
-    console.log(`${COLORS.yellowHighlight} Type 'connect' or 'whatsapp' for pairing QR code & settings.${COLORS.reset}`);
+    console.log(centerLine(`${COLORS.yellowHighlight} Type 'connect' or 'whatsapp' for pairing QR code & settings.${COLORS.reset}`, width));
   }
-  console.log(`${COLORS.gray} Shortcuts: 'resources' · 'status' · '/help' · 'exit'${COLORS.reset}\n`);
+  console.log(centerLine(`${COLORS.gray} Shortcuts: 'resources' · 'status' · '/help' · 'exit'${COLORS.reset}`, width));
+  console.log('');
 }
 
 function printHelp() {

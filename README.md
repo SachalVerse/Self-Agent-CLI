@@ -2,14 +2,14 @@
 
 ![SelfAgent Banner](banner.png)
 
-```text
+<div align="center">
+
+<pre>
   ___ ___ _    ___   _   ___ ___ _  _ _____ 
  / __| __| |  | __| /_\ / __| __| \| |_   _|
- \__ \ _|| |__| _| / _ \ (_ | _|| .` | | |
- |___/___|____|_| /_/ \_\___|___|_|\_| |_|
-```
-
-<div align="center">
+ \__ \ _|| |__| _| / _ \ (_ | _|| .` | | |  
+ |___/___|____|_| /_/ \_\___|___|_|\_| |_|  
+</pre>
 
 ### **The Autonomous AI Agent & Secure WhatsApp Gateway Engine**
 
