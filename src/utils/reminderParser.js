@@ -3,7 +3,18 @@
  * Extracts task description and duration from user prompts.
  */
 function parseReminder(text) {
-  const lower = text.toLowerCase();
+  // Normalize common number words to digits for robust regex matching
+  let normalizedText = text.toLowerCase()
+    .replace(/\bone\b/g, '1')
+    .replace(/\btwo\b/g, '2')
+    .replace(/\bthree\b/g, '3')
+    .replace(/\bfour\b/g, '4')
+    .replace(/\bfive\b/g, '5')
+    .replace(/\bten\b/g, '10')
+    .replace(/\ba\b/g, '1')
+    .replace(/\ban\b/g, '1');
+
+  const lower = normalizedText;
   if (!lower.includes('remind') && !lower.includes('timer') && !lower.includes('alert')) {
     return null;
   }
@@ -14,7 +25,7 @@ function parseReminder(text) {
 
   // 1. Check relative durations (e.g. in 5 minutes, in 2 hours, in 3 days, in 1 week)
   const relativeRegex = /(?:in|after|within|with\s+in)\s+(\d+)\s*(sec|second|minute|minut|min|hour|hr|day|week)s?/i;
-  const relativeMatch = text.match(relativeRegex);
+  const relativeMatch = lower.match(relativeRegex);
 
   if (relativeMatch) {
     relativeUsed = true;
@@ -45,7 +56,7 @@ function parseReminder(text) {
     tomorrow.setDate(tomorrow.getDate() + 1);
     
     const atTimeRegex = /at\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i;
-    const atMatch = text.match(atTimeRegex);
+    const atMatch = lower.match(atTimeRegex);
     
     if (atMatch) {
       let hours = parseInt(atMatch[1], 10);
@@ -65,7 +76,7 @@ function parseReminder(text) {
   // 3. Check absolute time today (e.g. at 5 PM, at 15:30)
   if (!durationMs) {
     const atTimeRegex = /at\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i;
-    const atMatch = text.match(atTimeRegex);
+    const atMatch = lower.match(atTimeRegex);
     
     if (atMatch) {
       let hours = parseInt(atMatch[1], 10);

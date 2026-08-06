@@ -298,7 +298,9 @@ class WhatsAppGateway extends EventEmitter {
     if (!this.sock || !this.isReady) {
       throw new Error('WhatsApp Gateway is not connected.');
     }
-    const formattedJid = to.includes('@') ? to : `${to.replace(/[^\d]/g, '')}@s.whatsapp.net`;
+    // Strip device suffix (e.g. :12@s.whatsapp.net -> @s.whatsapp.net) to ensure delivery
+    const cleanJid = to.replace(/:[\d]+@/, '@');
+    const formattedJid = cleanJid.includes('@') ? cleanJid : `${cleanJid.replace(/[^\d]/g, '')}@s.whatsapp.net`;
     const res = await this.sock.sendMessage(formattedJid, { text: message });
     if (res && res.key && res.key.id) {
       this.sentMessageIds.add(res.key.id);

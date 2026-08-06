@@ -51,9 +51,21 @@ class ChatAgent {
     if (reminder) {
       const reminderService = require('../scheduler/reminderService');
       const pairedPhone = gateway.myPhone || config.whatsapp.phoneNumber;
-      const targetJid = senderId === 'cli_user' ? (pairedPhone ? `${pairedPhone.replace(/[^\d]/g, '')}@s.whatsapp.net` : 'cli_user') : senderId;
-      reminderService.createReminder(targetJid, reminder.task, reminder.durationMs);
-      reminderConfirm = `✅ *Reminder Set:* I will notify you about "_${reminder.task}_" in ${reminder.label}.\n\n`;
+      let targetJid = senderId === 'cli_user' ? (pairedPhone ? `${pairedPhone.replace(/[^\d]/g, '')}@s.whatsapp.net` : 'cli_user') : senderId;
+      targetJid = targetJid.replace(/:[\d]+@/, '@');
+
+      let finalTask = reminder.task;
+      const lowerTask = finalTask.toLowerCase();
+      // If the parsed task is referential (contains "that", "it"), inherit the content of the previous user message
+      if (lowerTask.includes('that') || lowerTask.includes(' it ') || lowerTask.endsWith(' it') || lowerTask === 'it' || lowerTask.length < 3) {
+        const lastUserMsg = context.filter(m => m.role === 'user' && m.content !== textMessage).pop();
+        if (lastUserMsg) {
+          finalTask = lastUserMsg.content;
+        }
+      }
+
+      reminderService.createReminder(targetJid, finalTask, reminder.durationMs);
+      reminderConfirm = `✅ *Reminder Set:* I will notify you about "_${finalTask}_" in ${reminder.label}.\n\n`;
     }
 
     let replyText = '';
@@ -154,6 +166,11 @@ class ChatAgent {
 
 SYSTEM CONTEXT:
 - Connected WhatsApp Phone Number: ${connectedPhone} (If the user asks which WhatsApp number is connected, this is the one).
+
+SYSTEM CAPABILITIES & GUIDELINES:
+- You have FULL access to real-time tools. You CAN schedule reminders and send messages/alerts to WhatsApp in real-time.
+- NEVER tell the user "I cannot send messages", "I cannot schedule reminders", or "I don't have access to real-time tools".
+- If the user asks you to set a reminder or send a WhatsApp alert, tell them that the system has registered it and will send the message when due.
 
 RESPONSE LENGTH & STYLE DIRECTIVE:
 - Keep all responses SHORT, concise, punchy, and direct (maximum 2-3 sentences or clean bullet points).
