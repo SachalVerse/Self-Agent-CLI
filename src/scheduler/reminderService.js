@@ -40,7 +40,7 @@ class ReminderService {
   /**
    * Create a new reminder.
    */
-  createReminder(senderId, task, durationMs) {
+  createReminder(senderId, task, durationMs, type = 'reminder') {
     const triggerTime = Date.now() + durationMs;
     const reminder = {
       id: Math.random().toString(36).substring(2, 9),
@@ -48,12 +48,13 @@ class ReminderService {
       task,
       triggerTime,
       createdTime: Date.now(),
-      triggered: false
+      triggered: false,
+      type
     };
 
     this.reminders.push(reminder);
     this.saveReminders();
-    logger.info(`🔔 Created reminder: "${task}" for sender ${senderId} to trigger at ${new Date(triggerTime).toISOString()}`);
+    logger.info(`🔔 Created ${type}: "${task}" for sender ${senderId} to trigger at ${new Date(triggerTime).toISOString()}`);
     return reminder;
   }
 
@@ -64,21 +65,37 @@ class ReminderService {
     const now = Date.now();
     let dirty = false;
 
-    for (const reminder of this.reminders) {
+    // Use a copy to safely handle array insertions during loops
+    const activeReminders = [...this.reminders];
+
+    for (const reminder of activeReminders) {
       if (!reminder.triggered && now >= reminder.triggerTime) {
         if (gateway.isReady) {
           reminder.triggered = true;
           dirty = true;
-          logger.info(`⏰ Triggering reminder alert: "${reminder.task}" for ${reminder.senderId}`);
+          logger.info(`⏰ Triggering alert for ${reminder.type}: "${reminder.task}" for ${reminder.senderId}`);
 
           try {
-            const alertMessage = `⏰ *SelfAgent Reminder Alert!*\n\n` +
-                                 `You asked me to remind you about:\n` +
-                                 `👉 _${reminder.task}_\n\n` +
-                                 `⏰ Set on: ${new Date(reminder.createdTime).toLocaleTimeString()}`;
+            if (reminder.type === 'followup') {
+              const checkMessage = `📝 *SelfAgent Productivity Check-in!*\n\n` +
+                                   `Have you completed the task you set?\n` +
+                                   `👉 _${reminder.task}_\n\n` +
+                                   `Reply to let me know! Keep up the momentum! 🚀`;
+              await gateway.sendMessage(reminder.senderId, checkMessage);
+              logger.info(`✅ Sent productivity follow-up message to ${reminder.senderId}`);
+            } else {
+              const alertMessage = `⏰ *SelfAgent Reminder Alert!*\n\n` +
+                                   `You asked me to remind you about:\n` +
+                                   `👉 _${reminder.task}_\n\n` +
+                                   `⏰ Set on: ${new Date(reminder.createdTime).toLocaleTimeString()}`;
 
-            await gateway.sendMessage(reminder.senderId, alertMessage);
-            logger.info(`✅ Sent reminder WhatsApp message successfully to ${reminder.senderId}`);
+              await gateway.sendMessage(reminder.senderId, alertMessage);
+              logger.info(`✅ Sent reminder WhatsApp message successfully to ${reminder.senderId}`);
+
+              // Automatically schedule a productivity follow-up check-in 2 minutes later for testing
+              const followUpDelayMs = 2 * 60 * 1000;
+              this.createReminder(reminder.senderId, reminder.task, followUpDelayMs, 'followup');
+            }
           } catch (err) {
             logger.error(`❌ Failed to send reminder to ${reminder.senderId}:`, err.message);
           }
