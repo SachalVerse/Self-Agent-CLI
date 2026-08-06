@@ -151,7 +151,7 @@ gateway.on('message', async (message) => {
     }
 
   } catch (error) {
-    logger.error('Error in WhatsApp message handler:', error.message);
+    logger.error('Error in WhatsApp message handler:', error);
     healthMonitor.recordError(error);
   }
 });

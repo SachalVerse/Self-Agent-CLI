@@ -49,6 +49,7 @@ class ChatAgent {
     let reminderConfirm = '';
 
     if (reminder) {
+      const gateway = require('../whatsapp/gateway');
       const reminderService = require('../scheduler/reminderService');
       const pairedPhone = gateway.myPhone || config.whatsapp.phoneNumber;
       let targetJid = senderId === 'cli_user' ? (pairedPhone ? `${pairedPhone.replace(/[^\d]/g, '')}@s.whatsapp.net` : 'cli_user') : senderId;
