@@ -81,6 +81,26 @@ selfagent
 
 ---
 
+## 📦 Publishing to npm
+
+If you want to publish your own fork or custom build of SelfAgent:
+
+1. **Choose a Unique Name:** Open your [package.json](file:///c:/Users/Maher%20Sachal/Desktop/selfagent/package.json) and set the `"name"` field to a unique package name (e.g., `"selfagent-custom"`).
+2. **Authenticate with npm:** Run `npm login` to sign in.
+3. **Bypass 2FA via Classic Automation Token:**
+   - Go to your npm account profile $\rightarrow$ **Access Tokens** $\rightarrow$ **Generate New Token** $\rightarrow$ **Classic Token**.
+   - Select **Automation** as the token type (this bypasses 2FA verification prompts during CLI publications).
+   - Copy the generated token and link it to your local environment:
+     ```bash
+     npm config set //registry.npmjs.org/:_authToken "npm_your_automation_token"
+     ```
+4. **Publish to Registry:**
+   ```bash
+   npm publish --access public
+   ```
+
+---
+
 ## 💻 CLI REPL Commands
 
 Once the agent console is active (`selfagent >`), you can manage your system or query the AI:
