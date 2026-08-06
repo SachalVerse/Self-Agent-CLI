@@ -13,7 +13,7 @@ function parseReminder(text) {
   let relativeUsed = false;
 
   // 1. Check relative durations (e.g. in 5 minutes, in 2 hours, in 3 days, in 1 week)
-  const relativeRegex = /(?:in|after|within|with\s+in)\s+(\d+)\s*(sec|second|minute|min|hour|hr|day|week)s?/i;
+  const relativeRegex = /(?:in|after|within|with\s+in)\s+(\d+)\s*(sec|second|minute|minut|min|hour|hr|day|week)s?/i;
   const relativeMatch = text.match(relativeRegex);
 
   if (relativeMatch) {
@@ -24,7 +24,7 @@ function parseReminder(text) {
     if (unit.startsWith('sec')) {
       durationMs = amount * 1000;
       label = `${amount} second${amount > 1 ? 's' : ''}`;
-    } else if (unit.startsWith('min')) {
+    } else if (unit.startsWith('min') || unit.startsWith('minut')) {
       durationMs = amount * 60 * 1000;
       label = `${amount} minute${amount > 1 ? 's' : ''}`;
     } else if (unit.startsWith('hour') || unit.startsWith('hr')) {

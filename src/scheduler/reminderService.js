@@ -66,25 +66,24 @@ class ReminderService {
 
     for (const reminder of this.reminders) {
       if (!reminder.triggered && now >= reminder.triggerTime) {
-        reminder.triggered = true;
-        dirty = true;
+        if (gateway.isReady) {
+          reminder.triggered = true;
+          dirty = true;
+          logger.info(`⏰ Triggering reminder alert: "${reminder.task}" for ${reminder.senderId}`);
 
-        logger.info(`⏰ Triggering reminder alert: "${reminder.task}" for ${reminder.senderId}`);
+          try {
+            const alertMessage = `⏰ *SelfAgent Reminder Alert!*\n\n` +
+                                 `You asked me to remind you about:\n` +
+                                 `👉 _${reminder.task}_\n\n` +
+                                 `⏰ Set on: ${new Date(reminder.createdTime).toLocaleTimeString()}`;
 
-        try {
-          const alertMessage = `⏰ *SelfAgent Reminder Alert!*\n\n` +
-                               `You asked me to remind you about:\n` +
-                               `👉 _${reminder.task}_\n\n` +
-                               `⏰ Set on: ${new Date(reminder.createdTime).toLocaleTimeString()}`;
-
-          if (gateway.isReady) {
             await gateway.sendMessage(reminder.senderId, alertMessage);
             logger.info(`✅ Sent reminder WhatsApp message successfully to ${reminder.senderId}`);
-          } else {
-            logger.warn(`⚠️ WhatsApp gateway not connected. Queuing reminder alert.`);
+          } catch (err) {
+            logger.error(`❌ Failed to send reminder to ${reminder.senderId}:`, err.message);
           }
-        } catch (err) {
-          logger.error(`❌ Failed to send reminder to ${reminder.senderId}:`, err.message);
+        } else {
+          logger.warn(`⚠️ WhatsApp gateway not connected. Retrying reminder for ${reminder.senderId} once connection is restored.`);
         }
       }
     }
